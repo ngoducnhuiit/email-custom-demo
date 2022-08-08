@@ -1,0 +1,173 @@
+<?php 
+/*
+ * @var $block \Magepow\Customemail\Block\Index
+*/
+$product = $block->getRegistry();
+?>
+<div id="getQuoteForm"  class="reveal-modal tiny open" data-reveal="" aria-labelledby="modalTitle" aria-hidden="false" role="dialog" style="display: block; opacity: 1; visibility: visible; top: 464px;" tabindex="0">
+    <form name="quoteForm" id="quoteForm" action="<?php echo $block->getBaseUrl().'request-quote';?>" enctype="multipart/form-data" method="post">
+        <fieldset class="fieldset">
+            <div class="form-title">
+                <span><?php echo __('Submit a ') ?></span>
+                <a href="#" class="trigger-submit"><?php echo __('Request For Quotation') ?></a>
+                <span><?php echo __(' on quantities greater than those displayed.') ?></span>
+            </div>
+            <div class="form-content">
+                <div class="form-content-quotation">
+                    <input type="hidden" name="productsku" class="productsku" value="<?= $product->getSku()?>" >
+                    <input type="hidden" name="short_description" id="short_description" class="short_description" value="<?= $product->getSku()?>" >
+                    <input type="hidden" name="manufacturer" value="<?= $block->getAttribute($product)->getAttributeText('manufacturer')?>">
+                    <div class="field target-price">
+                        <label class="label" for="title"><span><?= $block->escapeHtmlAttr(__('Target Price(USD):')) ?></span></label>
+                        <div class="control">
+                            <span class="field-icon"><?php echo __('$') ?></span>
+                            <input name="targetprice" id="targetprice" title="Target Price(USD)" value="" class="input-text" type="text" data-validate="{'required-number':true,'validate-item-quantity':{'minAllowed':1,'maxAllowed':10000}}">
+                        </div>
+                    </div>
+                    <div class="field quantity">
+                        <label class="label" for="title"><span><?= $block->escapeHtmlAttr(__('Quantity:')) ?></span></label>
+                        <div class="control">
+                            <input name="quantity" id="quantity" title="Quantity" value="" class="input-text" type="text" data-validate="{'required-number':true,'validate-item-quantity':{'minAllowed':1,'maxAllowed':10000}}">
+                        </div>
+                    </div>
+                    <div class="field total">
+                        <label class="label" for="title"><span><?= $block->escapeHtmlAttr(__('Total:')) ?></span></label>
+                        <span class="change-price-sum"><?= $block->getCurrencySymbol().number_format($product->getFinalPrice(), 2); ?></span>
+                        <input name="totalprice" id="totalprice" title="Total" value="" class="input-text" type="hidden" placeholder="Total">
+                    </div>
+                </div>
+                <div class="form-content-info">
+                    <div class="field product">
+                        <div class="control">
+                            <span class="field-icon icon-th-list-1"></span>
+                            <input name="productname" id="productname" title="Product" value="<?= __($product->getName()) ?>" class="input-text" type="text"  placeholder="Product Name" readonly>
+                        </div>
+                    </div>
+                    <div class="field company">
+                        <div class="control">
+                            <span class="field-icon icon-home-1"></span>
+                            <span class="field-icon field-icon-hover icon-home-1"></span>
+                            <input name="companyname" id="companyname" title="Contact" value="" class="input-text" type="text"  placeholder="Company Name">
+                        </div>
+                    </div>
+                    <div class="field name">
+                        <div class="control">
+                            <span class="field-icon icon-user"></span>
+                            <span class="field-icon field-icon-hover icon-user"></span>
+                            <input name="name" id="name" title="Name" value="" class="input-text" type="text" data-validate="{required:true, 'validate-name':true}" placeholder="Contact Name">
+                        </div>
+                    </div>
+                    <div class="field email">
+                        <div class="control">
+                            <span class="field-icon icon-mail-alt"></span>
+                            <span class="field-icon field-icon-hover icon-mail-alt"></span>
+                            <input name="email" id="email" title="Email" value="" class="input-text" type="text" data-validate="{required:true, 'validate-email':true}" placeholder="yout@email.com">
+                        </div>
+                    </div>
+                    <div class="field message">
+                        <div class="control">
+                            <span class="field-icon icon-comment"></span>
+                            <span class="field-icon field-icon-hover icon-comment"></span>
+                            <textarea name="message_comment" id="message_comment" rows="5" placeholder=" <?= __("Please include part number and quantity or special requests if any.")?>"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <div class="actions-toolbar">
+        <div class="primary">
+            <button type="submit" title="<?php echo __('Submit') ?>" class="action submit primary">
+                <span><?php echo __('Submit RFQ') ?></span>
+            </button>
+        </div>
+    </div>
+    </form>
+</div>
+
+
+<script>
+    require(['jquery'], function ($) {
+        var sumPrice = $('.change-price-sum'),
+        price = $('.product-info-main .price-final_price .price-wrapper'),
+        inputQty = $('#quantity'),
+        totalPrice = $('#totalprice'),
+        triggerSubmid = $('.trigger-submit'),
+        formData = $("#quoteForm");
+        inputQty.on('keyup keydown',function(){
+            var $this = $(this);
+            var inputVal = parseFloat($this.val());
+            if(price.data('price-type') == 'finalPrice'){
+              var text =  price.children('.price').text(),
+              textOne = text.slice(0, 1),
+              textPrice = text.replace(textOne, ''),
+              sumprice = (inputVal != '' && inputVal >= 1) ? (parseFloat(textPrice)*inputVal).toFixed(2) : (parseFloat(textPrice)*1).toFixed(2);
+              (sumprice != 'NaN') ? sumPrice.html(textOne+sumprice) : sumPrice.html(text);
+              totalPrice.val(textOne+sumprice);
+            }
+        });
+        triggerSubmid.on('click', function(){
+           $('#quoteForm button.submit').trigger('click'); 
+        });
+        formData.submit(function(event) {
+            var productsku, manufacturer, targetprice, quantity, totalprice, short_description, productname, companyname, name, email, message_comment;
+                productsku = {
+                    'name': 'productsku',
+                    'value': $('input[name="productsku"]').val()
+                };
+                manufacturer = {
+                    'name': 'manufacturer',
+                    'value': $('input[name="manufacturer"]').val()
+                };
+                targetprice = {
+                    'name': 'targetprice',
+                    'value': $('#targetprice').val()
+                };
+                quantity = {
+                    'name': 'quantity',
+                    'value': $('#quantity').val()
+                };
+                /*totalprice = {
+                    'name': 'totalprice',
+                    'value': $('#totalprice').val()
+                };*/
+                short_description = {
+                    'name': 'short_description',
+                    'value': $('#short_description').val()
+                };
+                /*productname = {
+                    'name': 'productname',
+                    'value': $('#productname').val()
+                };*/
+                companyname = {
+                    'name': 'companyname',
+                    'value': $('#companyname').val()
+                };
+                name = {
+                    'name': 'name',
+                    'value': $('#name').val()
+                };
+                email = {
+                    'name': 'email',
+                    'value': $('#email').val()
+                };
+                message_comment = {
+                    'name': 'message_comment',
+                    'value': $('#message_comment').val()
+                };
+
+            var dataFormProduct = [productsku, manufacturer, short_description,  quantity, targetprice];
+            if(localStorage.getItem('items')){
+                const items = JSON.parse(localStorage.getItem('items'));
+                items.push(dataFormProduct);
+                localStorage.setItem('items', JSON.stringify(items));
+            }else{
+                localStorage.setItem('items', JSON.stringify([dataFormProduct]));
+            }
+            localStorage.setItem('account_info', JSON.stringify([companyname, name, email, message_comment]));
+        });
+
+
+
+
+    });
+</script>

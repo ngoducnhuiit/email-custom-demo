@@ -1,0 +1,46 @@
+<?php 
+/**
+ * @var $block \Magepow\Customemail\Block\Index\Email
+ */
+?>
+
+<?php 
+$_productsku = $block->getProductsku();
+$manufacturer = $block->getManufacturer();
+$description = $block->getDescription();
+$targetprice = $block->getTargetprice();
+$quantity = $block->getQuantity();
+$table1 = [];
+$table2 = [];
+$table3 = [];
+$table4 = [];
+?>
+
+<tbody>
+	<?php foreach ($manufacturer as $_item => $value): ?>
+		<?php $table1[$_item] = $value; ?>
+	<?php endforeach; ?>
+	<?php foreach ($description as $_item => $value): ?>
+    	<?php $table2[$_item] = $value; ?>
+	<?php endforeach; ?>
+	<?php foreach ($quantity as $_item => $value): ?>
+    	<?php $table3[$_item] = $value; ?>
+	<?php endforeach; ?>
+	<?php foreach ($targetprice as $_item => $value): ?>
+    	<?php $table4[$_item] = $value; ?>
+	<?php endforeach; ?>
+	<?php foreach ($_productsku as $_item => $value): ?>
+		<?php 
+			if ($value && $table3[$_item]) {
+				echo "<tr>";
+			        echo "<td>" . $value . "</td>";
+			        echo "<td>" . $table1[$_item] . "</td>";
+			        echo "<td>" . $table2[$_item] . "</td>";
+			        echo "<td>" . $table3[$_item] . "</td>";
+			        echo "<td>" . $table4[$_item]. "</td>";
+		        echo "</tr>";
+			}
+			
+		?>
+	<?php endforeach; ?>
+</tbody>

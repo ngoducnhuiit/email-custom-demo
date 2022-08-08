@@ -1,0 +1,393 @@
+<?php 
+/**
+ * @var $block \Magepow\Customemail\Block\Index\ReviewQuote 
+ */
+
+?>
+<div class="form-quote-process">
+    <ul class="process-list">
+        <li class="process-list-item">
+            <span class="icon-item icon-doc-new"></span>
+            <span class="icon-arrows icon-right-open"></span>
+            <span class="title"><?php echo __('Add Model to Below Form') ?></span>
+        </li>
+        <li class="process-list-item">
+            <span class="icon-item icon-users"></span>
+            <span class="icon-arrows icon-right-open"></span>
+            <span class="title"><?php echo __('Fill in Your Contact Information') ?></span>
+        </li>
+        <li class="process-list-item">
+            <span class="icon-item icon-upload-cloud-1"></span>
+            <span class="icon-arrows icon-right-open"></span>
+            <span class="title"><?php echo __('Submit the RFQ Form') ?></span>
+        </li>
+        <li class="process-list-item">
+            <span class="icon-item icon-ok"></span>
+            <span class="icon-arrows icon-right-open"></span>
+            <span class="title"><?php echo __('Done') ?></span>
+        </li>
+        <li class="process-list-item">
+            <span class="icon-item icon-clock"></span>
+            <span class="title"><?php echo __('Reply you within 24 Hours') ?></span>
+        </li>
+    </ul>
+</div>
+<div class="product-info">
+    <div id="getQuoteForm"  class="reveal-modal tiny open" data-reveal="" aria-labelledby="modalTitle" aria-hidden="false" role="dialog" style="display: block; opacity: 1; visibility: visible; top: 464px;" tabindex="0">
+        <form name="quoteForm" id="quoteForm" action="<?php echo $block->getBaseUrl().'customemail/index/post/';?>" enctype="multipart/form-data" method="post">
+            <fieldset class="fieldset">
+                <div class="form-title">
+                    <span class="title"><?php echo __('Tips') ?></span>
+                    <ul>
+                        <li><?php echo __('Please complete the following form with request model of detail and your contact information to get a quote.') ?></li>
+                        <li><?php echo __('After submit successful, our sales team will send quotation to you by email within 24 hours, or emial us') ?> <a href="mailto: info@bde-ltd.com"><?php echo __('info@bde-ltd.com') ?></a></li>
+                    </ul>
+                </div>
+                <div class="form-content">
+                    <div class="form-content-quotation">
+                        <table width="100%" align="center" border="0" cellpadding="0" cellspacing="0" id="partsList" class="parts_en">
+                            <thead>
+                                <tr>
+                                    <th width="23%"><span>*</span><?=__("Part Number")?></th>
+                                    <th width="20%"><?=__("Manufacturer")?></th>
+                                    <th><?=__("Description")?></th>
+                                    <th width="10%"><span>*</span><?=__("Quantity")?></th>
+                                    <th width="13%"><?=__("Target Price(USD)")?></th>
+                                    <th width="5%">&nbsp;</th>  
+                                </tr>
+                            </thead>
+                            <tbody class="append-new">
+                            </tbody>
+                            <div class="add-btn" colspan="6"><span class="icon-plus"><?=__("Add Part")?></span></div>
+                        </table>
+                    </div>
+                    <div class="form-content-info">
+                        <div class="block-title">
+                            <h2 class="title"><?php echo __('Please provide following contact information.') ?></h2>
+                        </div>
+                        <div class="block-content d-flex">
+                            <div class="block-column block-column1">
+                                <div class="field company">
+                                    <div class="control">
+                                        <span class="field-icon icon-home-1"></span>
+                                        <span class="field-icon field-icon-hover icon-home-1"></span>
+                                        <input name="companyname" id="companyname" title="Contact" value="" class="input-text" type="text"  placeholder="Company Name">
+                                    </div>
+                                </div>
+                                <div class="field name">
+                                    <div class="control">
+                                        <span class="field-icon icon-user"></span>
+                                        <span class="field-icon field-icon-hover icon-user"></span>
+                                        <input name="name" id="name" title="Name" value="" class="input-text" type="text"  placeholder="<?=__("Contact Name")?>">
+                                    </div>
+                                </div>
+                                <div class="field email required">
+                                    <div class="control">
+                                        <span class="field-icon icon-mail-alt"></span>
+                                        <span class="field-icon field-icon-hover icon-mail-alt"></span>
+                                        <input name="email" id="email" title="Email" value="" pattern="^[^\s@＠=]+[@|＠][^\.\s@＠]+(\.[^\.\s@＠]+)+$" class="input-text" type="text" data-validate="{required:true, 'validate-email':true}" placeholder="Email*" required>
+                                    </div>
+                                </div>
+                                <div class="field telephone">
+                                    <div class="control">
+                                        <span class="field-icon icon-phone"></span>
+                                        <span class="field-icon field-icon-hover icon-phone"></span>
+                                        <input name="telephone" id="telephone" title="Telephone" value="" class="input-text" type="text"  placeholder="<?=__("Your Tel")?>" >
+                                    </div>
+                                </div>
+
+                                <div class="field country">
+                                    <div class="control">
+                                        <span class="field-icon icon-globe"></span>
+                                        <span class="field-icon field-icon-hover icon-globe"></span>
+                                        <select name="country" id="country" title="Country" class="input-text">
+                                            <?php foreach ($block->getCountries() as $country => $value): ?>
+                                                <option value="<?=  $country ;?>">
+                                                    <?php echo $value; ?>
+                                                </option>
+                                            <?php endforeach ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="block-column block-column2">
+                                <div class="field address">
+                                    <div class="control">
+                                        <span class="field-icon icon-location"></span>
+                                        <span class="field-icon field-icon-hover icon-comment"></span>
+                                        <input name="address" id="address" title="Address" value="" class="input-text" type="text" placeholder="Your Address">
+                                    </div>
+                                </div>
+                                <div class="field message">
+                                    <div class="control">
+                                        <span class="field-icon icon-comment"></span>
+                                        <span class="field-icon field-icon-hover icon-comment"></span>
+                                        <textarea name="message_comment" id="message_comment" class="input-text" rows="5" placeholder="Please include part number and quantity or special requests if any."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="actions-toolbar">
+                            <div class="primary">
+                                <button type="submit" title="<?php echo __('Submit') ?>" class="action submit primary">
+                                    <span><?php echo __('Submit RFQ') ?></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<script>
+    require(['jquery'], function ($) {
+        'use strict';
+        var countryVal =  $('#country'),
+            localStorageItems = localStorage.getItem('items');
+        countryVal.on('change', function(){
+            $('#country option[value="'+$(this).val()+'"]').attr('selected', true).addClass('active');
+        });
+        var quoteForm = $('#quoteForm'),
+        i, j, items_per_col, $items, countStore, htmlItem, forAdd,
+        fieldsetForm =  $('#partsList .append-new');
+        var htmlAdd = '<tr class="col"><td class="item" data-name="Part Number"><input type="text" name="productsku[]" class="productsku textbox"></td>'+
+        '<td class="item" data-name="Manufacturer"><input type="text" name="manufacturer[]" class="manufacturer textbox"></td>'+
+        '<td class="item" data-name="Description"><input type="text" name="short_description[]" class="short_description textbox"></td>'+
+        '<td class="item" data-name="Quantity"><input type="text" name="quantity[]" class="quantity textbox"></td>'+
+        '<td class="item" data-name="Target Price(USD)"><input type="text" name="targetprice[]" class="targetprice textbox"></td>+'+
+        '<td class="item action"><i class="btn icon-cancel"></i></td></tr>';
+
+
+        if(localStorageItems){
+            var contentString = new Array("");
+            var k = 0,
+             requiredInput,
+            storedArray = JSON.parse(localStorage.getItem('items')),
+            countStore = storedArray.length; 
+            var dataItemArray = ['Part Number', 'Manufacturer', 'Description', 'Quantity', 'Target'];
+            for (i = 0; i < storedArray.length; i++) {
+               if(countStore > 1){
+                    for (j = 0 ; j < storedArray[i].length ; j++) {
+                        requiredInput = (j == 0 || j == 3) ? 'required=\"required\" ' : '';
+                        contentString[k] = '<td class="item" data-name="'+dataItemArray[j]+'"><input type="text" name="'+storedArray[i][j]['name']+'[]" class="'+storedArray[i][j]['name']+'  textbox_focus" value="'+storedArray[i][j]['value']+'" '+requiredInput+'></td>';
+                        fieldsetForm.append(contentString);
+                    }
+               }else{
+                htmlItem += '<td class="item" data-name="'+dataItemArray[0]+'"><input type="text" name="'+storedArray[i][0]['name']+'[]" class="'+storedArray[i][0]['name']+' textbox_focus" value="'+storedArray[i][0]['value']+'" required></td>';
+                htmlItem += '<td class="item" data-name="'+dataItemArray[1]+'"><input type="text" name="'+storedArray[i][1]['name']+'[]" class="'+storedArray[i][1]['name']+' textbox_focus" value="'+storedArray[i][1]['value']+'"></td>';
+                htmlItem += '<td class="item" data-name="'+dataItemArray[2]+'"><input type="text" name="'+storedArray[i][2]['name']+'[]" class="'+storedArray[i][2]['name']+' textbox_focus" value="'+storedArray[i][2]['value']+'"></td>';
+                htmlItem += '<td class="item" data-name="'+dataItemArray[3]+'"><input type="text" name="'+storedArray[i][3]['name']+'[]" class="'+storedArray[i][3]['name']+' textbox_focus" value="'+storedArray[i][3]['value']+'" required></td>';
+                htmlItem += '<td class="item" data-name="'+dataItemArray[4]+'"><input type="text" name="'+storedArray[i][4]['name']+'[]" class="'+storedArray[i][4]['name']+' textbox_focus" value="'+storedArray[i][4]['value']+'"></td>';
+                fieldsetForm.append(htmlItem);
+               }
+            } 
+            $items = $('#partsList .append-new .item');
+            function setCountWrap(count){
+                for(var i = 0; i < $items.length; i+=count) {
+                    $items.slice(i, i+count).wrapAll("<tr class='col'></tr>");
+                }
+                $('#quoteForm .fieldset .col').append('<td class="item action"><i class="btn icon-cancel"></i></td>'); 
+            }
+            setCountWrap(5);
+            $('.quantity, .productsku').each(function(){
+                if($('tr.col .quantity').val() != '' && $('tr.col .productsku').val() != '' || $('tr.col .quantity').val() == '' && $('tr.col .productsku').val() != ''){
+                    $(this).attr('required', true);
+                }
+            });
+            if(countStore < 4){
+               forAdd  = parseInt(4 - countStore);
+            }
+        }else{
+            forAdd = 4;
+        }
+        for (var i = 0; i < forAdd; i++) {
+            fieldsetForm.append(htmlAdd);
+            if(i==0 && localStorageItems == null){
+                $('.productsku:first-child').attr('required', true);
+                $('.quantity:first-child').attr('required', true);
+            }
+        }
+        if(localStorage.getItem('account_info')){
+            var accountArray = JSON.parse(localStorage.getItem('account_info'));
+            var n;
+            for (n = 0; n < accountArray.length; n++) {
+                switch (accountArray[n]['name']) {
+                    case 'companyname':
+                        $('#companyname').val(accountArray[n]['value']);
+                    case 'name':
+                        $('#name').val(accountArray[n]['value']);
+                    case 'email':
+                        $('#email').val(accountArray[n]['value']);
+                    case 'address':
+                        $('#address').val(accountArray[n]['value']);
+                    case 'telephone':
+                        $('#telephone').val(accountArray[n]['value']);
+                    case 'country':
+                        $('#country option[value="'+accountArray[n]['value']+'"]').attr('selected', true).addClass('active');
+                    case 'message_comment':
+                        $('#message_comment').val(accountArray[n]['value']);
+                }
+            }    
+        }
+
+        quoteForm.submit(function(event){
+            var itemSendMail = $(this).serializeArray();
+               localStorage.setItem('itemsEmail', JSON.stringify(itemSendMail));
+            var country, companyname, name, email, message_comment, telephone, address,
+            telephoneVal = $('#telephone').val(), 
+            addressVal= $('#address').val(), 
+            companynameVal= $('#companyname').val(), 
+            nameVal= $('#name').val(), 
+            emailVal= $('#email').val(), 
+            countryVal = $('#country').val(), 
+            messageVal= $('#message_comment').val(),
+            quantityVal = $('.quantity.textbox_focus').val(),
+            regex= /^[0-9]+$/;
+            telephone = {
+                'name': 'telephone',
+                'value': telephoneVal
+            };
+            address = {
+                'name': 'address',
+                'value': addressVal
+            };
+            companyname = {
+                'name': 'companyname',
+                'value': companynameVal
+            };
+            name = {
+                'name': 'name',
+                'value': nameVal
+            };
+            email = {
+                'name': 'email',
+                'value': emailVal
+            };
+            country = {
+                'name': 'country',
+                'value': countryVal
+            };
+            message_comment = {
+                'name': 'message_comment',
+                'value': messageVal
+            };
+            if(isNaN(quantityVal)){
+                alert("Filed quantity must input numbers");
+                return false;
+            }
+            if(isNaN(telephoneVal)){
+                alert("Filed Your tel must input numbers");
+                return false;
+            }
+            localStorage.setItem('account_info', JSON.stringify([companyname, name, email,  address, telephone, country, message_comment]));
+            ( emailVal == '' || countryVal == '') ? event.preventDefault() : '';
+            
+            var colRm = $('.append-new tr.col');
+            var dataForm2;
+            for (var i = 0; i < colRm.length; i++) {
+                dataForm2 = [
+                    { 
+                        'name': 'productsku',
+                        'value': colRm[i].children[0].children[0].value
+                    },
+                    { 
+                        'name': 'manufacturer',
+                        'value': colRm[i].children[1].children[0].value
+                    },
+                    { 
+                        'name': 'short_description',
+                        'value': colRm[i].children[2].children[0].value
+                    },
+                    { 
+                        'name': 'quantity',
+                        'value': colRm[i].children[3].children[0].value
+                    },
+                    { 
+                        'name': 'targetprice',
+                        'value': colRm[i].children[4].children[0].value
+                    },
+                ];
+                if(localStorage.getItem('items')){
+                    const items = JSON.parse(localStorage.getItem('items'));
+                    if(colRm[i].children[0].children[0].value || colRm[i].children[1].children[0].value){
+                        items != null ? items.push(dataForm2) : [] ;
+                        localStorage.setItem('items', JSON.stringify(items));
+                    }                   
+                }else{
+                    if(colRm[i].children[0].children[0].value || colRm[i].children[1].children[0].value){
+                        localStorage.setItem('items', JSON.stringify([dataForm2]));
+                    }
+                }
+
+            }
+
+            if(localStorage.getItem('items') == '{}' || localStorage.getItem('items') == null) event.preventDefault();
+        });
+
+        $('.add-btn').on('click', function() {
+                fieldsetForm.append(htmlAdd);
+        });
+        $(document).on('click', '.btn.icon-cancel',function(){
+            var valueSkuRm = $(this).parent().siblings('.item').children('.productsku').val();
+            $(this).parent().parent().remove();
+            localStorage.removeItem("items");
+            var colRm = $('.append-new tr.col');
+            var colCart = $('#request-minicart .cart-item-local .col-minicart');
+            var dataForm2;
+            for (var i = 0; i < colRm.length; i++) {
+                if(colCart[i].children[0].textContent == valueSkuRm){
+                    colCart[i].remove();
+                } 
+                dataForm2 = [
+                    { 
+                        'name': 'productsku',
+                        'value': colRm[i].children[0].children[0].value
+                    },
+                    { 
+                        'name': 'manufacturer',
+                        'value': colRm[i].children[1].children[0].value
+                    },
+                    { 
+                        'name': 'short_description',
+                        'value': colRm[i].children[2].children[0].value
+                    },
+                    { 
+                        'name': 'quantity',
+                        'value': colRm[i].children[3].children[0].value
+                    },
+                    { 
+                        'name': 'targetprice',
+                        'value': colRm[i].children[4].children[0].value
+                    },
+                ];
+                if(localStorage.getItem('items')){
+                    const items = JSON.parse(localStorage.getItem('items'));
+                    if(colRm[i].children[0].children[0].value || colRm[i].children[1].children[0].value){
+                        items != null ? items.push(dataForm2) : [] ;
+                        localStorage.setItem('items', JSON.stringify(items));
+                    }                   
+                }else{
+                    if(colRm[i].children[0].children[0].value || colRm[i].children[1].children[0].value){
+                        localStorage.setItem('items', JSON.stringify([dataForm2]));
+                    }
+                }
+
+            }
+        });
+
+        $(document).on('keyup keydown', 'input.textbox, input.textbox_focus', function(){
+            var $this = $(this);
+            if($this.hasClass('textbox') && $this.val() != ''){
+                $this.addClass('textbox_focus');
+                $this.removeClass('textbox');
+            }
+            if($this.hasClass('textbox_focus') && $this.val() == ''){
+                $this.addClass('textbox');
+                $this.removeClass('textbox_focus');
+            }
+        })
+
+    });
+</script>   

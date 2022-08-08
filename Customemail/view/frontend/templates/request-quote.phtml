@@ -1,0 +1,257 @@
+<?php 
+/**
+ * @var $block \Magepow\Customemail\Block\Index\ReviewQuote 
+ */
+
+?>
+
+<div class="product-info">
+    <div id="getQuoteForm"  class="reveal-modal tiny open" data-reveal="" aria-labelledby="modalTitle" aria-hidden="false" role="dialog" style="display: block; opacity: 1; visibility: visible; top: 464px;" tabindex="0">
+        <form name="quoteForm" id="quoteForm" action="<?php echo $block->getBaseUrl().'customemail/index/post/';?>" enctype="multipart/form-data" method="post">
+            <fieldset class="fieldset">
+                <div class="form-title">
+                    <span><?php echo __('Submit a ') ?></span>
+                    <a href="#"><?php echo __('Request For Quotation') ?></a>
+                    <span><?php echo __(' on quantities greater than those displayed.') ?></span>
+                </div>
+                <div class="form-content">
+                    <div class="form-content-quotation">
+                        <table width="100%" align="center" border="0" cellpadding="0" cellspacing="0" id="partsList" class="parts_en">
+                            <thead>
+                                <tr>
+                                    <th width="23%"><span>*</span>Part Number</th>
+                                    <th width="20%">Manufacturer</th>
+                                    <th>Description</th>
+                                    <th width="10%"><span>*</span>Quantity</th>
+                                    <th width="13%">Target Price(USD)</th>
+                                    <th width="5%">&nbsp;</th>  
+                                </tr>
+                            </thead>
+                            <tbody class="append-new">
+                            </tbody>
+                            <div class="add-btn" colspan="6"><a href="#" class="icon-plus">Add Part</a></div>
+                        </table>
+                    </div>
+                    <div class="form-content-info">
+                        <div class="field company">
+                            <div class="control">
+                                <span class="field-icon icon-home-1"></span>
+                                <input name="companyname" id="companyname" title="Contact" value="" class="input-text" type="text"  placeholder="Company Name">
+                            </div>
+                        </div>
+                        <div class="field name">
+                            <div class="control">
+                                <span class="field-icon icon-user"></span>
+                                <input name="name" id="name" title="Name" value="" class="input-text" type="text" data-validate="{required:true, 'validate-name':true}" placeholder="Contact Name">
+                            </div>
+                        </div>
+                        <div class="field email">
+                            <div class="control">
+                                <span class="field-icon icon-mail-alt"></span>
+                                <input name="email" id="email" title="Email" value="" pattern="^[^\s@＠=]+[@|＠][^\.\s@＠]+(\.[^\.\s@＠]+)+$" class="input-text" type="text" data-validate="{required:true, 'validate-email':true}" placeholder="yout@email.com">
+                            </div>
+                        </div>
+                        <div class="field telephone">
+                            <label class="label" for="title"><span><?= $block->escapeHtmlAttr(__('Your Tel:')) ?></span></label>
+                            <div class="control">
+                                <input name="telephone" id="telephone" title="Telephone" value="" class="input-text" type="text" data-validate="{'required-number':true,'validate-item-quantity':{'minAllowed':1,'maxAllowed':10000}}" placeholder="Your Tel">
+                            </div>
+                        </div>
+
+                        <div class="field country">
+                            <label class="label" for="title"><span><?= $block->escapeHtmlAttr(__('Country:')) ?></span></label>
+                            <div class="control">
+                                <select name="country" id="country" title="Country" class="input-text">
+                                    <?php foreach ($block->getCountries() as $country => $value): ?>
+                                        <option value="<?=  $country ;?>">
+                                            <?php echo $value; ?>
+                                        </option>
+                                    <?php endforeach ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="field address">
+                            <label class="label" for="title"><span><?= $block->escapeHtmlAttr(__('Your Address:')) ?></span></label>
+                            <div class="control">
+                                <input name="address" id="address" title="Address" value="" class="input-text" type="text" data-validate="{'required-number':true,'validate-item-quantity':{'minAllowed':1,'maxAllowed':10000}}" placeholder="Your Address">
+                            </div>
+                        </div>
+                        <div class="field message">
+                            <div class="control">
+                                <span class="field-icon icon-comment"></span>
+                                <textarea name="message_comment" id="message_comment" rows="5" placeholder="Please include part number and quantity or special requests if any."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="actions-toolbar">
+                <div class="primary">
+                    <button type="submit" title="<?php echo __('Submit') ?>" class="action submit primary">
+                        <span><?php echo __('Submit RFQ') ?></span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    require(['jquery'], function ($) {
+        'use strict';
+        var countryVal =  $('#country');
+        countryVal.on('change', function(){
+            $('#country_code').val($(this).val());
+            $('#country option[value="'+$(this).val()+'"]').attr('selected', true).addClass('active');
+            $('#country_text').val($('#country option[value="'+$(this).val()+'"]').text());
+        });
+        var quoteForm = $('#quoteForm'),
+        i, j, items_per_col, $items, countStore, htmlItem,
+        fieldsetForm =  $('#partsList .append-new');   
+        if(localStorage.getItem('items')){
+            var contentString = new Array("");
+            var k = 0,
+            storedArray = JSON.parse(localStorage.getItem('items'));
+            for (i = 0; i < storedArray.length; i++) {
+               countStore = storedArray.length;
+               if(countStore > 1){
+                    for (j = 0 ; j < storedArray[i].length ; j++) {
+                        contentString[k] = '<td class="item"><input type="text" name="'+storedArray[i][j]['name']+'[]" class="'+storedArray[i][j]['name']+'" value="'+storedArray[i][j]['value']+'"></td>';
+                        fieldsetForm.append(contentString);
+                    }
+               }else{
+                htmlItem += '<td class="item"><input type="text" name="'+storedArray[i][0]['name']+'[]" class="'+storedArray[i][0]['name']+'" value="'+storedArray[i][0]['value']+'"></td>';
+                htmlItem += '<td class="item"><input type="text" name="'+storedArray[i][1]['name']+'[]" class="'+storedArray[i][1]['name']+'" value="'+storedArray[i][1]['value']+'"></td>';
+                htmlItem += '<td class="item"><input type="text" name="'+storedArray[i][2]['name']+'[]" class="'+storedArray[i][2]['name']+'" value="'+storedArray[i][2]['value']+'"></td>';
+                htmlItem += '<td class="item"><input type="text" name="'+storedArray[i][3]['name']+'[]" class="'+storedArray[i][3]['name']+'" value="'+storedArray[i][3]['value']+'"></td>';
+                htmlItem += '<td class="item"><input type="text" name="'+storedArray[i][4]['name']+'[]" class="'+storedArray[i][4]['name']+'" value="'+storedArray[i][4]['value']+'"></td>';
+                fieldsetForm.append(htmlItem);
+               }
+            } 
+            $items = $('#partsList .append-new .item');
+            function setCountWrap(count){
+                for(var i = 0; i < $items.length; i+=count) {
+                    $items.slice(i, i+count).wrapAll("<tr class='col'></tr>");
+                }
+                $('#quoteForm .fieldset .col').append('<td class="item action"><i class="btn icon-cancel"></i></td>'); 
+            }
+            setCountWrap(5);
+        }
+
+        if(localStorage.getItem('account_info')){
+            var accountArray = JSON.parse(localStorage.getItem('account_info'));
+            var n;
+            for (n = 0; n < accountArray.length; n++) {
+                switch (accountArray[n]['name']) {
+                    case 'companyname':
+                        $('#companyname').val(accountArray[n]['value']);
+                    case 'name':
+                        $('#name').val(accountArray[n]['value']);
+                    case 'email':
+                        $('#email').val(accountArray[n]['value']);
+                    case 'address':
+                        $('#address').val(accountArray[n]['value']);
+                    case 'telephone':
+                        $('#telephone').val(accountArray[n]['value']);
+                    case 'country':
+                        $('#country option[value="'+accountArray[n]['value']+'"]').attr('selected', true).addClass('active');
+                    case 'message_comment':
+                        $('#message_comment').val(accountArray[n]['value']);
+                }
+            }    
+        }
+
+        $('.quantity, .productsku').each(function(){
+            $(this).attr('required', true);
+        });
+
+        quoteForm.submit(function(event){
+            var itemSendMail = $(this).serializeArray();
+               localStorage.setItem('itemsEmail', JSON.stringify(itemSendMail));
+            var country, companyname, name, email, message_comment, telephone, address,
+            telephoneVal = $('#telephone').val(), 
+            addressVal= $('#address').val(), 
+            companynameVal= $('#companyname').val(), 
+            nameVal= $('#name').val(), 
+            emailVal= $('#email').val(), 
+            countryVal = $('#country').val(), 
+            messageVal= $('#message_comment').val();
+            telephone = {
+                'name': 'telephone',
+                'value': telephoneVal
+            };
+            address = {
+                'name': 'address',
+                'value': addressVal
+            };
+            companyname = {
+                'name': 'companyname',
+                'value': companynameVal
+            };
+            name = {
+                'name': 'name',
+                'value': nameVal
+            };
+            email = {
+                'name': 'email',
+                'value': emailVal
+            };
+            country = {
+                'name': 'country',
+                'value': countryVal
+            };
+            message_comment = {
+                'name': 'message_comment',
+                'value': messageVal
+            };
+            
+            localStorage.setItem('account_info', JSON.stringify([companyname, name, email,  address, telephone, country, message_comment]));
+            (telephoneVal == '' || addressVal == ''  || nameVal == '' || emailVal == '' || countryVal == '') ? event.preventDefault() : '';
+        });
+
+        $('.btn.icon-cancel').on('click', function(){
+            $(this).parent().parent().remove();
+            localStorage.removeItem("items");
+            var colRm = $('.append-new tr.col');
+            var dataForm2;
+            for (var i = 0; i < colRm.length; i++) {
+                dataForm2 = [
+                    { 
+                        'name': 'productsku[]',
+                        'value': colRm[i].children[0].children[0].value
+                    },
+                    { 
+                        'name': 'manufacturer[]',
+                        'value': colRm[i].children[1].children[0].value
+                    },
+                    { 
+                        'name': 'short_description[]',
+                        'value': colRm[i].children[4].children[0].value
+                    },
+                    { 
+                        'name': 'quantity[]',
+                        'value': colRm[i].children[3].children[0].value
+                    },
+                    { 
+                        'name': 'targetprice[]',
+                        'value': colRm[i].children[2].children[0].value
+                    },
+                ];
+                if(localStorage.getItem('items')){
+                const items = JSON.parse(localStorage.getItem('items'));
+                    items.push(dataForm2);
+                    localStorage.setItem('items', JSON.stringify(items));
+                }else{
+                    localStorage.setItem('items', JSON.stringify([dataForm2]));
+                }
+
+            }
+        });
+
+        $('.add-btn').on('click', function() {
+            // body...
+        }) 
+        
+
+    });
+</script>   

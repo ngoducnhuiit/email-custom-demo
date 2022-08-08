@@ -1,0 +1,200 @@
+<?php 
+/*
+ * @var $block \Magepow\Customemail\Block\Index
+*/
+$product = $block->getRegistry();
+$helperbrand = $this->helper('Magiccart\Shopbrand\Helper\Data');
+$routerBrand = $helperbrand->getRouter();
+
+?>
+<div class="product-price">
+    <div class="additional-attributes-title price-view">
+  
+         <?php if ($product->isAvailable()) :?>
+            <div class="stock available items-label" style="text-align: center;" title="<?= $block->escapeHtmlAttr(__('Availability')) ?>">
+                <span style="width: 100%;"><?= $block->escapeHtml(__('In stock')) ?></span>
+            </div>
+            <div class="price-value">
+                <?php 
+                    $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+                    $productStockObj = $objectManager->get('Magento\CatalogInventory\Api\StockRegistryInterface');
+                    $productget = $productStockObj->getStockItem($product->getId());
+                    $productQty = (int) $productget->getQty();
+                    echo $productQty;
+
+                ?>
+            </div>
+        <?php else :?>
+            <div class="stock unavailable" title="<?= $block->escapeHtmlAttr(__('Availability')) ?>">
+                <span><?= $block->escapeHtml(__('Out of stock')) ?></span>
+            </div>
+        <?php endif; ?>
+  
+    </div>
+    <div class="price-view">
+        <div class="items-label">
+            <span></span>
+            <p><?php echo __('Price Reference') ?></p>
+        </div>
+        <div class="price-value">
+            <?php echo $this->helper('Magento\Framework\Pricing\Helper\Data')->currency(($product->getFinalPrice()), true, false); ?>
+        </div>
+    </div>
+</div>
+<div id="getQuoteForm"  class="reveal-modal tiny open" data-reveal="" aria-labelledby="modalTitle" aria-hidden="false" role="dialog" style="display: block; opacity: 1; visibility: visible; top: 464px;" tabindex="0">
+    <form name="quoteForm" id="quoteForm" action="<?php echo $block->getBaseUrl().'customemail/index/post';?>" enctype="multipart/form-data" method="post" data-mage-init='{"validation": {"required-number":true, "minlength": 10}}'>
+        <fieldset class="fieldset">
+            <div class="form-content">
+                <div class="form-content-quotation">
+                    <input type="hidden" name="short_description" id="short_description" class="short_description" value="<?= $product->getSku()?>" >
+                    <input type="hidden" name="productcheck" value="1">
+
+                    <div class="field target-price">
+                        <label class="label" for="title"><span><?= $block->escapeHtmlAttr(__('Target Price(USD):')) ?></span></label>
+                        <div class="control">
+                            <span class="field-icon"><?php echo __('$') ?></span>
+                            <input name="targetprice" id="targetprice" title="Target Price(USD)" value="" class="input-text" type="text" >
+                        </div>
+                    </div>
+                    <div class="field quantity required">
+                        <label class="label" for="title"><span><?= $block->escapeHtmlAttr(__('Quantity*:')) ?></span></label>
+                        <div class="control">
+                            <input name="quantity" id="quantity" title="Quantity" value="" class="input-text" type="text" data-validate="{'required-number':true,'validate-item-quantity':{'minAllowed':1,'maxAllowed':10000}}" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-content-info">
+                    <div class="field name">
+                        <div class="control">
+                            <span class="field-icon icon-user"></span>
+                            <span class="field-icon field-icon-hover icon-user"></span>
+                            <input name="name" id="name" title="Name" value="" class="input-text" type="text"  placeholder="Name">
+                        </div>
+                    </div>
+                    <div class="field email required">
+                        <div class="control">
+                            <span class="field-icon icon-mail-alt"></span>
+                            <span class="field-icon field-icon-hover icon-mail-alt"></span>
+                            <input name="email" id="email" title="Email" value="" class="input-text" type="text" data-validate="{required:true, 'validate-email':true}" placeholder="Email*" required>
+                        </div>
+                    </div>
+                    <div class="field company">
+                        <div class="control">
+                            <span class="field-icon icon-home-1"></span>
+                            <span class="field-icon field-icon-hover icon-home-1"></span>
+                            <input name="companyname" id="companyname" title="Contact" value="" class="input-text" type="text"  placeholder="Company Name">
+                        </div>
+                    </div>
+                    <div class="field telephone">
+                        <div class="control">
+                            <span class="field-icon icon-phone"></span>
+                            <span class="field-icon field-icon-hover icon-phone"></span>
+                            <input name="telephone" id="telephone" title="Telephone" value="" class="input-text" type="text"  placeholder="<?=__("Your Tel")?>">
+                        </div>
+                    </div>
+                    <div class="field product required">
+                        <div class="control">
+                            <span class="field-icon icon-th-list-1"></span>
+                            <input type="text" name="productsku" class="productsku input-text" value="<?= $product->getSku()?>" placeholder="Part Number*" required>
+                        </div>
+                    </div>
+                    <div class="field manufacturer">
+                        <div class="control">
+                            <span class="field-icon icon-home-1"></span>
+                            <span class="field-icon field-icon-hover icon-home-1"></span>
+                            <input type="text" name="manufacturer" value="<?= $block->getAttribute($product)->getAttributeText('manufacturer')?>" class="input-text" placeholder="Manufacturer" readonly>
+                        </div>
+                    </div>
+                   
+                    <div class="field message">
+                        <div class="control">
+                            <span class="field-icon icon-comment"></span>
+                            <span class="field-icon field-icon-hover icon-comment"></span>
+                            <textarea name="message_comment" id="message_comment" class="input-text"  placeholder=" <?= __("Please include part number and quantity or special requests if any.")?>"></textarea>
+                        </div>
+                    </div>
+                    <div class="field checkbox add-list-email">
+                        <div class="control">
+                            <input type="checkbox" name="checkbox_mail" id="checkbox_mail" checked>
+                            <label for="checkbox_mail"><?php echo __('Add me to your E-mail list') ?></label>
+                            
+                        </div>                        
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <div class="actions-toolbar">
+        <div class="primary">
+            <button type="submit" title="<?php echo __('Submit') ?>" class="action submit primary">
+                <span><?php echo __('Submit RFQ') ?></span>
+            </button>
+        </div>
+    </div>
+    </form>
+</div>
+
+<script type="text/x-magento-init">
+    {
+        "#quoteForm": {
+            "validation": {}
+        }
+    }
+</script>
+<script>
+    require(['jquery'], function ($) {
+        $(document).find('.catalog-product-view #description .product.attribute.description a').each(function(){
+            if(typeof $(this).attr('target') == 'undefined'){
+                $(this).attr('target', '_blank');
+            }
+        });
+        /*var triggerSubmid = $('.trigger-submit');
+        var urlSite = "$this->getUrl(); ?>";*/
+      /*  triggerSubmid.on('click', function(){
+           var productsku, manufacturer, targetprice, quantity, short_description ;
+                productsku = {
+                    'name': 'productsku',
+                    'value': $('input[name="productsku"]').val()
+                };
+                manufacturer = {
+                    'name': 'manufacturer',
+                    'value': $('input[name="manufacturer"]').val()
+                };
+                targetprice = {
+                    'name': 'targetprice',
+                    'value': $('#targetprice').val()
+                };
+                quantity = {
+                    'name': 'quantity',
+                    'value': $('#quantity').val()
+                };
+
+                short_description = {
+                    'name': 'short_description',
+                    'value': $('#short_description').val()
+                };
+            var dataFormProduct = [productsku, manufacturer, short_description,  quantity, targetprice];
+            if(localStorage.getItem('items')){
+                const items = JSON.parse(localStorage.getItem('items'));
+                items.push(dataFormProduct);
+                localStorage.setItem('items', JSON.stringify(items));
+            }else{
+                localStorage.setItem('items', JSON.stringify([dataFormProduct]));
+            }
+        });*/
+
+        /*var dataManu = $('#product-attribute-specs-table td.col.data');
+        var dataUrlBrand = $('.brand-img').data('brandurlkey');
+        var textManu;
+        var routerbrand = "<?php echo $routerBrand ?>";
+        dataManu.each(function(){
+            if($(this).data('th') == 'Manufacturer'){
+                textManu = $(this).text();
+                $(this).html("<a class='redirect-brand' style='text-decoration: underline' href='"+urlSite+routerbrand+'/'+dataUrlBrand+".html'>"+textManu+"</a>");
+                $(this).parent().css('cursor', 'pointer');
+            }
+            $(this).parent().click(function(){
+                window.location.replace($(this).find('a').attr('href'));
+            });
+        });*/
+    });
+</script>

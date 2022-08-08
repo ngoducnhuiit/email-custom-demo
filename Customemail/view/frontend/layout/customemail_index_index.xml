@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="content">
+            <block class="Magepow\Customemail\Block\Index\ReviewQuote" name="customemail_index_index" template="Magepow_Customemail::request-quote.phtml"/>
+        </referenceBlock>
+    </body>
+</page>

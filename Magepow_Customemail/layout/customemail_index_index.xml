@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+ <head>
+ <title translate="true" xsi:type="string">Request Quote | bde-ltd.tormeka.com | Electronic Components Distributor</title>
+ </head>
+    
+	<body>
+        <referenceBlock name="breadcrumbs">
+    		<action method="addCrumb">
+    			<argument name="crumbName" xsi:type="string">home</argument>
+    			<argument name="crumbInfo" xsi:type="array">
+    				<item name="title" xsi:type="string">Home</item>
+    				<item name="label" xsi:type="string">Home</item>
+    				<!-- <item name="link" xsi:type="string">/</item> -->
+    				<item name="link" xsi:type="string">{{baseUrl}}</item>
+    			</argument>
+    		</action>
+    		<action method="addCrumb">
+    			<argument name="crumbName" xsi:type="string">Request a Quote</argument>
+    			<argument name="crumbInfo" xsi:type="array">
+    				<item name="title" xsi:type="string">Request a Quote</item>
+    				<item name="label" xsi:type="string">Request a Quote</item>
+    			</argument>
+    		</action>
+    	</referenceBlock>        
+        <referenceBlock name="page.main.title">
+            <action method="setPageTitle">
+                <argument translate="true" name="title" xsi:type="string">Request Quote</argument>
+            </action>
+        </referenceBlock>
+        <referenceBlock name="content">
+            <block class="Magepow\Customemail\Block\Index\ReviewQuote" name="customemail_index_index" template="Magepow_Customemail::request-quote.phtml"/>
+        </referenceBlock>
+    </body>
+</page>

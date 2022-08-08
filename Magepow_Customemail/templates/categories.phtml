@@ -1,0 +1,30 @@
+<?php 
+/**
+ * @var $block \Magepow\Customemail\Block\Index\Categories
+ */
+$categories = $block->getCategoryCollection();
+$rootId = $block->getRootCategoryId();
+?>
+<div class="all-categories-content">
+    <h2 class="all-categories-title"><?php echo __('List') ?></h2>
+    <ul class="parent-categories">
+    <?php foreach ($categories as $category): ?>
+        <?php if ($category['children_count'] != 0 || $category['parent_id'] == $rootId): ?>
+            <?php $countProduct = $category->getProductCollection()->count();?>
+            <li class="parent-category" id="cate-<?=  $category->getId()?>">
+                <a href="<?= $category->getUrl()?>"><?php echo $category->getName()."(".$countProduct.")"?></a>
+                <ul class="child-category"><?php foreach ($category->getChildrenCategories() as $child): ?><li class="category-item item">
+                            <div class="category-item-info">
+                                <div class="category-item-details">
+                                    <h4 class="category-item-name">
+                                        <a class="category-item-link" href="<?php echo $child->getUrl() ?>"><?php echo $child->getName() ?></a>
+                                        <span class="count"><?php echo "(".$child->getProductCollection()->count().")";?>  </span>
+                                    </h4>
+                                </div>
+                            </div>
+                        </li><?php endforeach ?></ul>    
+            </li>
+        <?php endif ?>
+    <?php endforeach; ?>
+    </ul>
+</div>

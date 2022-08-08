@@ -1,0 +1,69 @@
+<!--@subject Email Product  @-->
+
+{{template config_path="design/email/header_template"}}
+
+<table>
+    <tr>
+        <td><strong>{{trans "Name"}}</strong></td>
+        <td>{{var name}}</td>
+    </tr>
+    <tr>
+        <td><strong>{{trans "Email:"}}</strong></td>
+        <td>{{var email}}</td>
+    </tr>
+    <tr>
+        <td><strong>{{trans "Company Name:"}}</strong></td>
+        <td>{{var companyname}}</td>
+    </tr>
+    {{if address}}
+    <tr>
+        <td><strong>{{trans "Address:"}}</strong></td>
+        <td>{{var address}}</td>
+    </tr>
+    {{/if}}
+    <tr>
+        <td><strong>{{trans "Telephone:"}}</strong></td>
+        <td>{{var telephone}}</td>
+    </tr>
+    {{if country}}
+    <tr>
+        <td><strong>{{trans "Country:"}}</strong></td>
+        <td>{{var country}}</td>
+    </tr>
+    {{/if}}
+</table>
+<table>
+    <thead>
+        <tr>
+            <th><strong>{{trans "Product Sku"}}</strong></th>
+            <th><strong>{{trans "Manufacturer"}}</strong></th>
+            <th><strong>{{trans "Description"}}</strong></th>
+            <th><strong>{{trans "Quantity"}}</strong></th>
+            <th><strong>{{trans "Target Price(USD)"}}</strong></th>
+        </tr>
+    </thead>
+    {{if productcheck}}
+        <tbody>   
+            <tr>
+                <td>{{var productsku}}</td>
+                <td>{{var manufacturer}}</td>
+                <td>{{var description}}</td>
+                <td>{{var quantity}}</td>
+                <td>{{var targetprice}}</td>
+            </tr>        
+        </tbody>
+    {{else}}
+        {{layout handle="email_order_items_product" productsku=$productsku  manufacturer=$manufacturer description=$description targetprice=$targetprice quantity=$quantity area="frontend"}}
+    {{/if}}
+ <!--@styles
+    table table table{width: 1000px; margin: 30px 0; padding: 10px 0; text-align: center; border-bottom: 1px solid #ccc;}
+    table table table tbody tr td {text-align: center;border: 1px solid #ccc;padding: 5px 0;}
+    table table table thead tr th{border: 2px solid #ccc;}
+ @-->
+</table>
+
+<p><strong>{{trans "Message:"}}</strong></p>
+<p>{{var message}}</p>
+
+
+{{template config_path="design/email/footer_template"}}

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+    <body>
+    <attribute name="class" value="cms-policy"/>
+    <move element="page.main.title" destination="content" before="-"/>
+      <referenceContainer name="div.sidebar.additional">
+          <block class="Magento\Cms\Block\Block" name="block_policy_sidebar" before="-">
+            <arguments>
+            <argument name="block_id" xsi:type="string">block-policy-sidebar</argument>
+            </arguments>
+          </block>
+      </referenceContainer>
+        <referenceBlock name="content">
+            <block class="Magento\Framework\View\Element\Template" name="email_send_success" template="Magepow_Customemail::success.phtml"/>
+        </referenceBlock>
+    </body>
+</page>
